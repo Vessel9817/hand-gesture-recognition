@@ -3,7 +3,7 @@
 
 from typing import List, Optional
 
-# A normalized version of above Landmark proto. All coordinates should be within [0, 1].
+# A normalized version of Landmark proto. All coordinates should be within [0, 1].
 class NormalizedLandmark:
     def __init__(
         self,
@@ -14,9 +14,6 @@ class NormalizedLandmark:
         presence: Optional[float] = None
     ) -> None:
         self.x, self.y, self.z, self.visibility, self.presence = x, y, z, visibility, presence
-
-    def HasField(self, field: str) -> bool:
-        return getattr(self, field) is not None
 
 class NormalizedLandmarkList:
     def __init__(self, landmark: Optional[List[NormalizedLandmark]] = None) -> None:

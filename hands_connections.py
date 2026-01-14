@@ -18,24 +18,24 @@
 
 from typing import Iterable, Tuple
 
-from mediapipe.tasks.python import vision
+from mediapipe.tasks.python.vision.hand_landmarker import HandLandmarksConnections
 
-def _asLegacyConnection(c: vision.HandLandmarksConnections.Connection) -> Tuple[int, int]:
+def _as_legacy_connection(c: HandLandmarksConnections.Connection) -> Tuple[int, int]:
     return (c.start, c.end)
 
-def _asLegacyConnections(cs: Iterable[vision.HandLandmarksConnections.Connection]) -> Tuple[int, int]:
-    return frozenset().union(map(_asLegacyConnection, cs))
+def _as_legacy_connections(cs: Iterable[HandLandmarksConnections.Connection]) -> frozenset[Tuple[int, int]]:
+    return frozenset().union(map(_as_legacy_connection, cs))
 
-HAND_PALM_CONNECTIONS = _asLegacyConnections(vision.HandLandmarksConnections.HAND_PALM_CONNECTIONS)
+HAND_PALM_CONNECTIONS = _as_legacy_connections(HandLandmarksConnections.HAND_PALM_CONNECTIONS)
 
-HAND_THUMB_CONNECTIONS = _asLegacyConnections(vision.HandLandmarksConnections.HAND_THUMB_CONNECTIONS)
+HAND_THUMB_CONNECTIONS = _as_legacy_connections(HandLandmarksConnections.HAND_THUMB_CONNECTIONS)
 
-HAND_INDEX_FINGER_CONNECTIONS = _asLegacyConnections(vision.HandLandmarksConnections.HAND_INDEX_FINGER_CONNECTIONS)
+HAND_INDEX_FINGER_CONNECTIONS = _as_legacy_connections(HandLandmarksConnections.HAND_INDEX_FINGER_CONNECTIONS)
 
-HAND_MIDDLE_FINGER_CONNECTIONS = _asLegacyConnections(vision.HandLandmarksConnections.HAND_MIDDLE_FINGER_CONNECTIONS)
+HAND_MIDDLE_FINGER_CONNECTIONS = _as_legacy_connections(HandLandmarksConnections.HAND_MIDDLE_FINGER_CONNECTIONS)
 
-HAND_RING_FINGER_CONNECTIONS = _asLegacyConnections(vision.HandLandmarksConnections.HAND_RING_FINGER_CONNECTIONS)
+HAND_RING_FINGER_CONNECTIONS = _as_legacy_connections(HandLandmarksConnections.HAND_RING_FINGER_CONNECTIONS)
 
-HAND_PINKY_FINGER_CONNECTIONS = _asLegacyConnections(vision.HandLandmarksConnections.HAND_PINKY_FINGER_CONNECTIONS)
+HAND_PINKY_FINGER_CONNECTIONS = _as_legacy_connections(HandLandmarksConnections.HAND_PINKY_FINGER_CONNECTIONS)
 
-HAND_CONNECTIONS = _asLegacyConnections(vision.HandLandmarksConnections.HAND_CONNECTIONS)
+HAND_CONNECTIONS = _as_legacy_connections(HandLandmarksConnections.HAND_CONNECTIONS)

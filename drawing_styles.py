@@ -30,9 +30,6 @@ _YELLOW = (0, 204, 255)
 _GRAY = (128, 128, 128)
 _PURPLE = (128, 64, 128)
 _PEACH = (180, 229, 255)
-_WHITE = (224, 224, 224)
-_CYAN = (192, 255, 48)
-_MAGENTA = (192, 48, 255)
 
 # Hands
 _THICKNESS_WRIST_MCP = 3
@@ -94,8 +91,7 @@ _HAND_CONNECTION_STYLE = {
         DrawingSpec(color=_BLUE, thickness=_THICKNESS_FINGER)
 }
 
-def get_default_hand_connections_style(
-) -> Mapping[Tuple[int, int], DrawingSpec]:
+def get_default_hand_connections_style() -> Mapping[Tuple[int, int], DrawingSpec]:
   """Returns the default hand connections drawing style.
 
   Returns:
@@ -103,8 +99,8 @@ def get_default_hand_connections_style(
   """
   hand_connection_style = {}
   for k, v in _HAND_CONNECTION_STYLE.items():
-    for connection in k:
-      hand_connection_style[connection] = v
+        for connection in k:
+            hand_connection_style[connection] = v
   return hand_connection_style
 
 def get_default_hand_landmarks_style() -> Mapping[int, DrawingSpec]:
@@ -115,6 +111,6 @@ def get_default_hand_landmarks_style() -> Mapping[int, DrawingSpec]:
   """
   hand_landmark_style = {}
   for k, v in _HAND_LANDMARK_STYLE.items():
-    for landmark in k:
-      hand_landmark_style[landmark] = v
+        for landmark in k:
+            hand_landmark_style[landmark] = v
   return hand_landmark_style
