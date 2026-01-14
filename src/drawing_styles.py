@@ -18,9 +18,10 @@
 
 from typing import Mapping, Tuple
 
+from mediapipe.tasks.python.vision.hand_landmarker import HandLandmark
+
 from drawing_utils import DrawingSpec
 import hands_connections
-from hands import HandLandmark
 
 _RADIUS = 5
 _RED = (48, 48, 255)

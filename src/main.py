@@ -13,15 +13,19 @@ from colab import cv2_imshow
 from drawing import draw_landmarks_on_image
 
 if __name__ == '__main__':
+    _SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+    _MODEL_ASSET_PATH = os.path.join(_SCRIPT_DIR, 'hand_landmarker.task')
     _REFRESH_RATE_MS = 1
-    _EXIT_KEY = ord('x')
-    # Open the default camera
+    _EXIT_KEY = ord('q')
+    _WINDOW_TITLE = 'Hand gesture recognition'
+    # Opening the default camera
     capture = cv2.VideoCapture(0)
-    script_dir = os.path.dirname(os.path.abspath(__file__))
     # https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task
-    model_asset_path = os.path.join(script_dir, 'hand_landmarker.task')
-    base_options = python.BaseOptions(model_asset_path=model_asset_path)
-    options = vision.HandLandmarkerOptions(base_options=base_options, num_hands=2)
+    base_options = python.BaseOptions(model_asset_path=_MODEL_ASSET_PATH)
+    options = vision.HandLandmarkerOptions(
+        base_options=base_options,
+        num_hands=2
+    )
     detector = vision.HandLandmarker.create_from_options(options)
     print(f'+=================+\n| Press {chr(_EXIT_KEY)} to quit |\n+=================+')
     try:
@@ -35,14 +39,14 @@ if __name__ == '__main__':
             # TODO Use detector.detect_for_video instead, see if accuracy improves
             detection_result = detector.detect(img)
             annotated_image = draw_landmarks_on_image(img.numpy_view(), detection_result)
-            cv2_imshow('Hand gesture recognition', annotated_image)
-            # Waiting for exit key
+            cv2_imshow(_WINDOW_TITLE, annotated_image)
+            # Checking if exit key was pressed
             if cv2.waitKey(_REFRESH_RATE_MS) & 0xFF == _EXIT_KEY:
                 break
     except KeyboardInterrupt:
         # Exit cleanly if program is interrupted
         pass
     finally:
-        # Releasing the camera and closing all OpenCV windows
+        # Releasing resources
         capture.release()
         cv2.destroyAllWindows()
