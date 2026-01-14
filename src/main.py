@@ -14,6 +14,7 @@ from drawing import draw_landmarks_on_image
 
 if __name__ == '__main__':
     _REFRESH_RATE_MS = 1
+    _EXIT_KEY = ord('x')
     # Open the default camera
     capture = cv2.VideoCapture(0)
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -22,7 +23,7 @@ if __name__ == '__main__':
     base_options = python.BaseOptions(model_asset_path=model_asset_path)
     options = vision.HandLandmarkerOptions(base_options=base_options, num_hands=2)
     detector = vision.HandLandmarker.create_from_options(options)
-    print('Press Ctrl+C to quit')
+    print(f'+=================+\n| Press {chr(_EXIT_KEY)} to quit |\n+=================+')
     try:
         while True:
             # Capturing a frame from the camera
@@ -35,7 +36,9 @@ if __name__ == '__main__':
             detection_result = detector.detect(img)
             annotated_image = draw_landmarks_on_image(img.numpy_view(), detection_result)
             cv2_imshow('Hand gesture recognition', annotated_image)
-            cv2.waitKey(_REFRESH_RATE_MS)
+            # Waiting for exit key
+            if cv2.waitKey(_REFRESH_RATE_MS) & 0xFF == _EXIT_KEY:
+                break
     except KeyboardInterrupt:
         # Exit cleanly if program is interrupted
         pass
