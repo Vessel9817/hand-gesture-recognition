@@ -16,5 +16,8 @@ class NormalizedLandmark:
         self.x, self.y, self.z, self.visibility, self.presence = x, y, z, visibility, presence
 
 class NormalizedLandmarkList:
-    def __init__(self, landmark: Optional[List[NormalizedLandmark]] = None) -> None:
+    def __init__(
+        self,
+        landmark: Optional[List[NormalizedLandmark]] = None
+    ) -> None:
         self.landmark = [] if landmark is None else landmark
