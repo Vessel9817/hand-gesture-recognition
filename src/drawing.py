@@ -21,12 +21,24 @@ import drawing_styles
 from drawing_utils import draw_landmarks
 from landmark import NormalizedLandmark, NormalizedLandmarkList
 
+Result = vision.HandLandmarkerResult | vision.FaceLandmarkerResult
+
 MARGIN = 10 # pixels
 FONT_SIZE = 1
 FONT_THICKNESS = 1
 HANDEDNESS_TEXT_COLOR = (88, 205, 54) # vibrant green
 
 def draw_landmarks_on_image(
+    rgb_image: np.ndarray,
+    detection_result: Result
+) -> np.ndarray:
+    if isinstance(detection_result, vision.HandLandmarkerResult):
+        return _draw_hand_landmarks_on_image(rgb_image, detection_result)
+    elif isinstance(detection_result, vision.FaceLandmarkerResult):
+        return _draw_face_landmarks_on_image(rgb_image, detection_result)
+    raise NotImplementedError('Can only draw hand or face landmarks')
+
+def _draw_hand_landmarks_on_image(
     rgb_image: np.ndarray,
     detection_result: vision.HandLandmarkerResult
 ) -> np.ndarray:
@@ -58,4 +70,26 @@ def draw_landmarks_on_image(
         cv2.putText(annotated_image, f"{handedness[0].category_name}",
                     (text_x, text_y), cv2.FONT_HERSHEY_DUPLEX,
                     FONT_SIZE, HANDEDNESS_TEXT_COLOR, FONT_THICKNESS, cv2.LINE_AA)
+    return annotated_image
+
+def _draw_face_landmarks_on_image(
+    rgb_image: np.ndarray,
+    detection_result: vision.FaceLandmarkerResult
+) -> np.ndarray:
+    face_landmarks_list = detection_result.face_landmarks
+    annotated_image = np.copy(rgb_image)
+    # Loop through the detected faces to visualize.
+    for idx in range(len(face_landmarks_list)):
+        face_landmarks = face_landmarks_list[idx]
+        # Draw the face landmarks.
+        face_landmarks_proto = NormalizedLandmarkList()
+        face_landmarks_proto.landmark.extend([
+            NormalizedLandmark(x=landmark.x, y=landmark.y, z=landmark.z) for landmark in face_landmarks
+        ])
+        draw_landmarks(
+            annotated_image,
+            face_landmarks_proto,
+            vision.FaceLandmarksConnections.FACE_LANDMARKS_TESSELATION,
+            drawing_styles.get_default_face_mesh_tesselation_style(),
+            drawing_styles.get_default_face_mesh_tesselation_style())
     return annotated_image
