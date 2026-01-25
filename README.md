@@ -5,6 +5,10 @@ built with [MediaPipe][MediaPipe]. Tracks landmarks using a webcam.
 Can be used for sign language recognition, gesture-based controls
 or interactive applications, such as VR.
 
+Also included by MediaPipe, but not yet implemented here,
+is [full-body landmarking][pose models]
+and [hand gesture categorization][hand gesture models].
+
 ## Table of Contents
 
 - [Installation Instructions](#installation-instructions)
@@ -30,7 +34,8 @@ or interactive applications, such as VR.
 
    Newer [hand][hand models] or [face models][face models]
    may be available in the future.
-   You can also write a [custom model][custom models].
+   You can also write a custom model, as outlined
+   in the [custom hand gesture recognition][custom models] sample.
 
 1. Create a virtual environment:
 
@@ -84,4 +89,6 @@ the [LICENSE](LICENSE) file for details.
 [MediaPipe]: https://ai.google.dev/edge/mediapipe/solutions/guide
 [hand models]: https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker#models
 [face models]: https://ai.google.dev/edge/mediapipe/solutions/vision/face_landmarker#models
+[pose models]: https://ai.google.dev/edge/mediapipe/solutions/vision/pose_landmarker#models
+[hand gesture models]: https://ai.google.dev/edge/mediapipe/solutions/vision/gesture_recognizer#models
 [custom models]: https://ai.google.dev/edge/mediapipe/solutions/customization/gesture_recognizer
