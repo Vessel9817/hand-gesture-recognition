@@ -1,10 +1,9 @@
 # Hand Tracking and Facial Recognition
 
-https://ai.google.dev/edge/mediapipe/solutions/vision/gesture_recognizer#get_started
-
-A real-time hand and facial recognition system built with MediaPipe.
-Tracks landmarks using a webcam. Can be used for sign language recognition,
-gesture-based controls or interactive applications.
+A real-time hand and facial recognition system
+built with [MediaPipe][MediaPipe]. Tracks landmarks using a webcam.
+Can be used for sign language recognition, gesture-based controls
+or interactive applications, such as VR.
 
 ## Table of Contents
 
@@ -82,6 +81,7 @@ See: [CONTRIBUTING.md](CONTRIBUTING.md)
 This project is licensed under the AGPLv3 License - see
 the [LICENSE](LICENSE) file for details.
 
+[MediaPipe]: https://ai.google.dev/edge/mediapipe/solutions/guide
 [hand models]: https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker#models
 [face models]: https://ai.google.dev/edge/mediapipe/solutions/vision/face_landmarker#models
 [custom models]: https://ai.google.dev/edge/mediapipe/solutions/customization/gesture_recognizer
