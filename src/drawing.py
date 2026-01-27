@@ -21,7 +21,9 @@ import drawing_styles
 from drawing_utils import draw_landmarks
 from landmark import NormalizedLandmark, NormalizedLandmarkList
 
-Result = vision.HandLandmarkerResult | vision.FaceLandmarkerResult
+Result = vision.HandLandmarkerResult \
+    | vision.FaceLandmarkerResult \
+    | vision.PoseLandmarkerResult
 
 MARGIN = 10 # pixels
 FONT_SIZE = 1
@@ -36,6 +38,8 @@ def draw_landmarks_on_image(
         return _draw_hand_landmarks_on_image(rgb_image, detection_result)
     elif isinstance(detection_result, vision.FaceLandmarkerResult):
         return _draw_face_landmarks_on_image(rgb_image, detection_result)
+    elif isinstance(detection_result, vision.PoseLandmarkerResult):
+        return _draw_body_landmarks_on_image(rgb_image, detection_result)
     raise NotImplementedError('Can only draw hand or face landmarks')
 
 def _draw_hand_landmarks_on_image(
@@ -92,4 +96,26 @@ def _draw_face_landmarks_on_image(
             vision.FaceLandmarksConnections.FACE_LANDMARKS_TESSELATION,
             drawing_styles.get_default_face_mesh_tesselation_style(),
             drawing_styles.get_default_face_mesh_tesselation_style())
+    return annotated_image
+
+def _draw_body_landmarks_on_image(
+    rgb_image: np.ndarray,
+    detection_result: vision.PoseLandmarkerResult
+) -> np.ndarray:
+    body_landmarks_list = detection_result.pose_landmarks
+    annotated_image = np.copy(rgb_image)
+    # Loop through the detected faces to visualize.
+    for idx in range(len(body_landmarks_list)):
+        body_landmarks = body_landmarks_list[idx]
+        # Draw the body landmarks.
+        body_landmarks_proto = NormalizedLandmarkList()
+        body_landmarks_proto.landmark.extend([
+            NormalizedLandmark(x=landmark.x, y=landmark.y, z=landmark.z) for landmark in body_landmarks
+        ])
+        draw_landmarks(
+            annotated_image,
+            body_landmarks_proto,
+            vision.PoseLandmarksConnections.POSE_LANDMARKS,
+            drawing_styles.get_default_body_landmarks_style(),
+            drawing_styles.get_default_body_landmarks_style())
     return annotated_image

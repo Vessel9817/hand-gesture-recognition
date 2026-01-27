@@ -1,13 +1,12 @@
 # Hand Tracking and Facial Recognition
 
-A real-time hand and facial recognition system
+A real-time hand, face and full-body recognition system
 built with [MediaPipe][MediaPipe]. Tracks landmarks using a webcam.
 Can be used for sign language recognition, gesture-based controls
 or interactive applications, such as VR.
 
 Also included by MediaPipe, but not yet implemented here,
-is [full-body landmarking][pose models]
-and [hand gesture categorization][hand gesture models].
+is [hand gesture categorization][hand gesture models].
 
 ## Table of Contents
 
@@ -30,12 +29,11 @@ and [hand gesture categorization][hand gesture models].
    ```shell
    curl -o ./src/hand_landmarker.task https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task
    curl -o ./src/face_landmarker.task https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task
+   curl -o ./src/pose_landmarker.task https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_heavy/float16/latest/pose_landmarker_heavy.task
    ```
 
-   Newer [hand][hand models] or [face models][face models]
-   may be available in the future.
-   You can also write a custom model, as outlined
-   in the [custom hand gesture recognition][custom models] sample.
+   Newer [hand][hand models], [face][face models]
+   or [full-body models][pose models] may be available in the future.
 
 1. Create a virtual environment:
 
@@ -73,9 +71,14 @@ and [hand gesture categorization][hand gesture models].
       py "./src/main.py"
       ```
 
-- Move your hands and face around in view of the camera.
+- Move your hands, face and body around in view of the camera.
   Play around with it and test its limits!
 - With the window focused, press `q` to exit the program.
+
+## Custom Models
+
+See MediaPipe's [custom hand gesture recognition][custom models] sample
+for how to create a custom model. The same principles apply to models in general.
 
 ## Contributing
 

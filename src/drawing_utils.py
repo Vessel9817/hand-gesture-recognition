@@ -102,7 +102,7 @@ def draw_landmarks(
     if not landmark_list:
         return
     if image.shape[2] != _BGR_CHANNELS:
-        raise ValueError('Input image must contain three channel bgr data.')
+        raise ValueError(f'Input image must contain {_BGR_CHANNELS} channel bgr data.')
     image_rows, image_cols, _ = image.shape
     idx_to_coordinates = {}
     for idx, landmark in enumerate(landmark_list.landmark):

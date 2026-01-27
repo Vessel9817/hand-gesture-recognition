@@ -16,7 +16,7 @@
 # limitations under the License.
 """MediaPipe solution drawing styles."""
 
-from typing import Literal, Mapping, Tuple
+from typing import Mapping, Tuple
 
 from mediapipe.tasks.python.vision.hand_landmarker import HandLandmark
 
@@ -32,7 +32,7 @@ _GRAY = (128, 128, 128)
 _PURPLE = (128, 64, 128)
 _PEACH = (180, 229, 255)
 _WHITE = (224, 224, 224)
-_CYAN = (192, 255, 48)
+_TURQUOISE = (192, 255, 48)
 _MAGENTA = (192, 48, 255)
 
 # Hands
@@ -126,7 +126,7 @@ _FACE_CONTOURS_CONNECTION_STYLE_1 = {
     connections.FACE_LANDMARKS_LIPS:
         DrawingSpec(color=_BLUE, thickness=_THICKNESS_CONTOURS),
     connections.FACE_LANDMARKS_LEFT_EYE:
-        DrawingSpec(color=_CYAN, thickness=_THICKNESS_CONTOURS),
+        DrawingSpec(color=_TURQUOISE, thickness=_THICKNESS_CONTOURS),
     connections.FACE_LANDMARKS_LEFT_EYEBROW:
         DrawingSpec(color=_GREEN, thickness=_THICKNESS_CONTOURS),
     connections.FACE_LANDMARKS_RIGHT_EYE:
@@ -135,9 +135,10 @@ _FACE_CONTOURS_CONNECTION_STYLE_1 = {
         DrawingSpec(color=_RED, thickness=_THICKNESS_CONTOURS),
     connections.FACE_LANDMARKS_FACE_OVAL:
         DrawingSpec(color=_WHITE, thickness=_THICKNESS_CONTOURS),
-    # connections.FACE_LANDMARKS_NOSE:
-    #     DrawingSpec(color=_YELLOW, thickness=_THICKNESS_CONTOURS)
 }
+
+# Pose
+_THICKNESS_BODY_LANDMARKS = 2
 
 def get_default_hand_connections_style(
 ) -> Mapping[Tuple[int, int], DrawingSpec]:
@@ -152,7 +153,8 @@ def get_default_hand_connections_style(
             hand_connection_style[connection] = v
   return hand_connection_style
 
-def get_default_hand_landmarks_style() -> Mapping[int, DrawingSpec]:
+def get_default_hand_landmarks_style(
+) -> Mapping[int, DrawingSpec]:
   """Returns the default hand landmarks drawing style.
 
   Returns:
@@ -165,7 +167,7 @@ def get_default_hand_landmarks_style() -> Mapping[int, DrawingSpec]:
   return hand_landmark_style
 
 def get_default_face_mesh_contours_style(
-    i: Literal[0, 1] = 0
+    i: int = 0
 ) -> Mapping[Tuple[int, int], DrawingSpec]:
     """Returns the default face mesh contours drawing style.
 
@@ -187,7 +189,8 @@ def get_default_face_mesh_contours_style(
             face_mesh_contours_connection_style[connection] = v
     return face_mesh_contours_connection_style
 
-def get_default_face_mesh_tesselation_style() -> DrawingSpec:
+def get_default_face_mesh_tesselation_style(
+) -> DrawingSpec:
     """Returns the default face mesh tesselation drawing style.
 
     Returns:
@@ -210,3 +213,13 @@ def get_default_face_mesh_iris_connections_style(
     for connection in connections.FACE_LANDMARKS_RIGHT_IRIS:
         face_mesh_iris_connections_style[connection] = right_spec
     return face_mesh_iris_connections_style
+
+def get_default_body_landmarks_style(
+) -> DrawingSpec:
+    """Returns the default pose landmarks drawing style.
+
+    Returns:
+        A mapping from each pose landmark to its default drawing spec.
+    """
+    return DrawingSpec(
+        color=_RED, thickness=_THICKNESS_BODY_LANDMARKS)

@@ -22,10 +22,13 @@ from mediapipe.tasks.python.vision.face_landmarker import \
     FaceLandmarksConnections
 from mediapipe.tasks.python.vision.hand_landmarker import \
     HandLandmarksConnections
+from mediapipe.tasks.python.vision.pose_landmarker import \
+    PoseLandmarksConnections
 
 Connection = Union[
     HandLandmarksConnections.Connection,
-    FaceLandmarksConnections.Connection
+    FaceLandmarksConnections.Connection,
+    PoseLandmarksConnections.Connection
 ]
 
 def _as_legacy_connection(c: Connection) -> Tuple[int, int]:
