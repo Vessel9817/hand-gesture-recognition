@@ -31,9 +31,6 @@ _YELLOW = (0, 204, 255)
 _GRAY = (128, 128, 128)
 _PURPLE = (128, 64, 128)
 _PEACH = (180, 229, 255)
-_WHITE = (224, 224, 224)
-_TURQUOISE = (192, 255, 48)
-_MAGENTA = (192, 48, 255)
 
 # Hands
 _THICKNESS_WRIST_MCP = 3
@@ -105,39 +102,10 @@ _HAND_CONNECTION_STYLE = {
         DrawingSpec(color=_BLUE, thickness=_THICKNESS_FINGER)
 }
 
-# Face connections
+# Face
 _THICKNESS_TESSELATION = 1
-_THICKNESS_CONTOURS = 2
-_FACE_CONTOURS_CONNECTION_STYLE_0 = {
-    connections.FACE_LANDMARKS_LIPS:
-        DrawingSpec(color=_WHITE, thickness=_THICKNESS_CONTOURS),
-    connections.FACE_LANDMARKS_LEFT_EYE:
-        DrawingSpec(color=_GREEN, thickness=_THICKNESS_CONTOURS),
-    connections.FACE_LANDMARKS_LEFT_EYEBROW:
-        DrawingSpec(color=_GREEN, thickness=_THICKNESS_CONTOURS),
-    connections.FACE_LANDMARKS_RIGHT_EYE:
-        DrawingSpec(color=_RED, thickness=_THICKNESS_CONTOURS),
-    connections.FACE_LANDMARKS_RIGHT_EYEBROW:
-        DrawingSpec(color=_RED, thickness=_THICKNESS_CONTOURS),
-    connections.FACE_LANDMARKS_FACE_OVAL:
-        DrawingSpec(color=_WHITE, thickness=_THICKNESS_CONTOURS)
-}
-_FACE_CONTOURS_CONNECTION_STYLE_1 = {
-    connections.FACE_LANDMARKS_LIPS:
-        DrawingSpec(color=_BLUE, thickness=_THICKNESS_CONTOURS),
-    connections.FACE_LANDMARKS_LEFT_EYE:
-        DrawingSpec(color=_TURQUOISE, thickness=_THICKNESS_CONTOURS),
-    connections.FACE_LANDMARKS_LEFT_EYEBROW:
-        DrawingSpec(color=_GREEN, thickness=_THICKNESS_CONTOURS),
-    connections.FACE_LANDMARKS_RIGHT_EYE:
-        DrawingSpec(color=_MAGENTA, thickness=_THICKNESS_CONTOURS),
-    connections.FACE_LANDMARKS_RIGHT_EYEBROW:
-        DrawingSpec(color=_RED, thickness=_THICKNESS_CONTOURS),
-    connections.FACE_LANDMARKS_FACE_OVAL:
-        DrawingSpec(color=_WHITE, thickness=_THICKNESS_CONTOURS),
-}
 
-# Pose
+# Body
 _THICKNESS_BODY_LANDMARKS = 2
 
 def get_default_hand_connections_style(
@@ -166,29 +134,6 @@ def get_default_hand_landmarks_style(
             hand_landmark_style[landmark] = v
   return hand_landmark_style
 
-def get_default_face_mesh_contours_style(
-    i: int = 0
-) -> Mapping[Tuple[int, int], DrawingSpec]:
-    """Returns the default face mesh contours drawing style.
-
-    Args:
-        i: The id for default style. Currently there are two default styles.
-
-    Returns:
-        A mapping from each face mesh contours connection to its default drawing
-        spec.
-    """
-    default_style = (
-        _FACE_CONTOURS_CONNECTION_STYLE_1
-        if i == 1
-        else _FACE_CONTOURS_CONNECTION_STYLE_0
-    )
-    face_mesh_contours_connection_style = {}
-    for k, v in default_style.items():
-        for connection in k:
-            face_mesh_contours_connection_style[connection] = v
-    return face_mesh_contours_connection_style
-
 def get_default_face_mesh_tesselation_style(
 ) -> DrawingSpec:
     """Returns the default face mesh tesselation drawing style.
@@ -197,22 +142,6 @@ def get_default_face_mesh_tesselation_style(
         A DrawingSpec.
     """
     return DrawingSpec(color=_GRAY, thickness=_THICKNESS_TESSELATION)
-
-def get_default_face_mesh_iris_connections_style(
-) -> Mapping[Tuple[int, int], DrawingSpec]:
-    """Returns the default face mesh iris connections drawing style.
-
-    Returns:
-        A mapping from each iris connection to its default drawing spec.
-    """
-    face_mesh_iris_connections_style = {}
-    left_spec = DrawingSpec(color=_GREEN, thickness=_THICKNESS_CONTOURS)
-    for connection in connections.FACE_LANDMARKS_LEFT_IRIS:
-        face_mesh_iris_connections_style[connection] = left_spec
-    right_spec = DrawingSpec(color=_RED, thickness=_THICKNESS_CONTOURS)
-    for connection in connections.FACE_LANDMARKS_RIGHT_IRIS:
-        face_mesh_iris_connections_style[connection] = right_spec
-    return face_mesh_iris_connections_style
 
 def get_default_body_landmarks_style(
 ) -> DrawingSpec:
