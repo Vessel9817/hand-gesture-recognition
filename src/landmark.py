@@ -7,9 +7,9 @@ from typing import List, Optional
 class NormalizedLandmark:
     def __init__(
         self,
-        x: Optional[float] = None,
-        y: Optional[float] = None,
-        z: Optional[float] = None,
+        x: float,
+        y: float,
+        z: float,
         visibility: Optional[float] = None,
         presence: Optional[float] = None
     ) -> None:

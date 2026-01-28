@@ -14,8 +14,8 @@
 # limitations under the License.
 
 import cv2
-from mediapipe.tasks.python import vision
 import numpy as np
+from mediapipe.tasks.python import vision
 
 import drawing_styles
 from drawing_utils import draw_landmarks
@@ -33,7 +33,7 @@ HANDEDNESS_TEXT_COLOR = (88, 205, 54) # vibrant green
 def draw_landmarks_on_image(
     rgb_image: np.ndarray,
     detection_result: Result
-) -> np.ndarray:
+) -> None:
     if isinstance(detection_result, vision.HandLandmarkerResult):
         return _draw_hand_landmarks_on_image(rgb_image, detection_result)
     elif isinstance(detection_result, vision.FaceLandmarkerResult):
@@ -45,10 +45,9 @@ def draw_landmarks_on_image(
 def _draw_hand_landmarks_on_image(
     rgb_image: np.ndarray,
     detection_result: vision.HandLandmarkerResult
-) -> np.ndarray:
+) -> None:
     hand_landmarks_list = detection_result.hand_landmarks
     handedness_list = detection_result.handedness
-    annotated_image = np.copy(rgb_image)
     # Loop through the detected hands to visualize.
     for idx in range(len(hand_landmarks_list)):
         hand_landmarks = hand_landmarks_list[idx]
@@ -56,66 +55,65 @@ def _draw_hand_landmarks_on_image(
         # Draw the hand landmarks.
         hand_landmarks_proto = NormalizedLandmarkList()
         hand_landmarks_proto.landmark.extend([
-            NormalizedLandmark(x=landmark.x, y=landmark.y, z=landmark.z) for landmark in hand_landmarks
+            NormalizedLandmark(x=landmark.x, y=landmark.y, z=landmark.z)
+            for landmark in hand_landmarks
         ])
         draw_landmarks(
-            annotated_image,
+            rgb_image,
             hand_landmarks_proto,
             vision.HandLandmarksConnections.HAND_CONNECTIONS,
             drawing_styles.get_default_hand_landmarks_style(),
             drawing_styles.get_default_hand_connections_style())
         # Get the top left corner of the detected hand's bounding box.
-        height, width, _ = annotated_image.shape
+        height, width, _ = rgb_image.shape
         x_coordinates = [landmark.x for landmark in hand_landmarks]
         y_coordinates = [landmark.y for landmark in hand_landmarks]
         text_x = int(min(x_coordinates) * width)
         text_y = int(min(y_coordinates) * height) - MARGIN
         # Draw handedness (left or right hand) on the image.
-        cv2.putText(annotated_image, f"{handedness[0].category_name}",
+        cv2.putText(rgb_image, f"{handedness[0].category_name}",
                     (text_x, text_y), cv2.FONT_HERSHEY_DUPLEX,
-                    FONT_SIZE, HANDEDNESS_TEXT_COLOR, FONT_THICKNESS, cv2.LINE_AA)
-    return annotated_image
+                    FONT_SIZE, HANDEDNESS_TEXT_COLOR, FONT_THICKNESS,
+                    cv2.LINE_AA)
 
 def _draw_face_landmarks_on_image(
     rgb_image: np.ndarray,
     detection_result: vision.FaceLandmarkerResult
-) -> np.ndarray:
+) -> None:
     face_landmarks_list = detection_result.face_landmarks
-    annotated_image = np.copy(rgb_image)
     # Loop through the detected faces to visualize.
     for idx in range(len(face_landmarks_list)):
         face_landmarks = face_landmarks_list[idx]
         # Draw the face landmarks.
         face_landmarks_proto = NormalizedLandmarkList()
         face_landmarks_proto.landmark.extend([
-            NormalizedLandmark(x=landmark.x, y=landmark.y, z=landmark.z) for landmark in face_landmarks
+            NormalizedLandmark(x=landmark.x, y=landmark.y, z=landmark.z)
+            for landmark in face_landmarks
         ])
         draw_landmarks(
-            annotated_image,
+            rgb_image,
             face_landmarks_proto,
             vision.FaceLandmarksConnections.FACE_LANDMARKS_TESSELATION,
             drawing_styles.get_default_face_mesh_tesselation_style(),
             drawing_styles.get_default_face_mesh_tesselation_style())
-    return annotated_image
 
 def _draw_body_landmarks_on_image(
     rgb_image: np.ndarray,
     detection_result: vision.PoseLandmarkerResult
-) -> np.ndarray:
+) -> None:
     body_landmarks_list = detection_result.pose_landmarks
-    annotated_image = np.copy(rgb_image)
     # Loop through the detected faces to visualize.
     for idx in range(len(body_landmarks_list)):
         body_landmarks = body_landmarks_list[idx]
         # Draw the body landmarks.
         body_landmarks_proto = NormalizedLandmarkList()
         body_landmarks_proto.landmark.extend([
-            NormalizedLandmark(x=landmark.x, y=landmark.y, z=landmark.z) for landmark in body_landmarks
+            NormalizedLandmark(x=landmark.x, y=landmark.y, z=landmark.z)
+            for landmark in body_landmarks
         ])
         draw_landmarks(
-            annotated_image,
+            rgb_image,
             body_landmarks_proto,
             vision.PoseLandmarksConnections.POSE_LANDMARKS,
             drawing_styles.get_default_body_landmarks_style(),
             drawing_styles.get_default_body_landmarks_style())
-    return annotated_image
