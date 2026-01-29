@@ -13,17 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import TypeAlias
+
 import cv2
 import numpy as np
 from mediapipe.tasks.python import vision
 
-import drawing_styles
-from drawing_utils import draw_landmarks
-from landmark import NormalizedLandmark, NormalizedLandmarkList
+from . import drawing_styles
+from .drawing_utils import draw_landmarks
+from .landmark import NormalizedLandmark, NormalizedLandmarkList
+from .type_aliases import (FaceLandmarkerResult, HandLandmarkerResult,
+                           PoseLandmarkerResult)
 
-Result = vision.HandLandmarkerResult \
-    | vision.FaceLandmarkerResult \
-    | vision.PoseLandmarkerResult
+Result: TypeAlias = HandLandmarkerResult \
+    | FaceLandmarkerResult \
+    | PoseLandmarkerResult
 
 MARGIN = 10 # pixels
 FONT_SIZE = 1
@@ -44,7 +48,7 @@ def draw_landmarks_on_image(
 
 def _draw_hand_landmarks_on_image(
     rgb_image: np.ndarray,
-    detection_result: vision.HandLandmarkerResult
+    detection_result: HandLandmarkerResult
 ) -> None:
     hand_landmarks_list = detection_result.hand_landmarks
     handedness_list = detection_result.handedness
@@ -78,7 +82,7 @@ def _draw_hand_landmarks_on_image(
 
 def _draw_face_landmarks_on_image(
     rgb_image: np.ndarray,
-    detection_result: vision.FaceLandmarkerResult
+    detection_result: FaceLandmarkerResult
 ) -> None:
     face_landmarks_list = detection_result.face_landmarks
     # Loop through the detected faces to visualize.
@@ -99,7 +103,7 @@ def _draw_face_landmarks_on_image(
 
 def _draw_body_landmarks_on_image(
     rgb_image: np.ndarray,
-    detection_result: vision.PoseLandmarkerResult
+    detection_result: PoseLandmarkerResult
 ) -> None:
     body_landmarks_list = detection_result.pose_landmarks
     # Loop through the detected faces to visualize.

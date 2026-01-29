@@ -16,7 +16,7 @@
 # limitations under the License.
 """MediaPipe Hands connections."""
 
-from typing import Iterable, Tuple
+from typing import Iterable, Tuple, TypeAlias
 
 from mediapipe.tasks.python.vision.face_landmarker import \
     FaceLandmarksConnections
@@ -25,7 +25,7 @@ from mediapipe.tasks.python.vision.hand_landmarker import \
 from mediapipe.tasks.python.vision.pose_landmarker import \
     PoseLandmarksConnections
 
-Connection = \
+Connection: TypeAlias = \
     HandLandmarksConnections.Connection | \
     FaceLandmarksConnections.Connection | \
     PoseLandmarksConnections.Connection

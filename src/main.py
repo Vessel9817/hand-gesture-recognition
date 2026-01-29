@@ -9,9 +9,9 @@ import cv2
 import mediapipe as mp
 import numpy as np
 
-from colab import cv2_imshow
-from detectors import BodyDetector, FaceDetector, HandDetector
-from drawing import draw_landmarks_on_image
+from .colab import cv2_imshow
+from .detectors import BodyDetector, FaceDetector, HandDetector
+from .drawing import draw_landmarks_on_image
 
 _CAMERA_INDEX = 0
 _SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))

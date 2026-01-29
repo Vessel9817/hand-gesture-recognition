@@ -68,7 +68,7 @@ is [hand gesture categorization][hand gesture models].
    1. Run the main Python script:
 
       ```shell
-      py "./src/main.py"
+      py -m src.main
       ```
 
 - Move your hands, face and body around in view of the camera.

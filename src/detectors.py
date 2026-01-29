@@ -5,6 +5,9 @@ import mediapipe as mp
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 
+from .type_aliases import (FaceLandmarkerResult, HandLandmarkerResult,
+                           PoseLandmarkerResult)
+
 T = TypeVar('T')
 
 class Detector(Generic[T]):
@@ -21,13 +24,13 @@ class Detector(Generic[T]):
     def result(self) -> T:
         pass
 
-class HandDetector(Detector[Optional[vision.HandLandmarkerResult]]):
+class HandDetector(Detector[Optional[HandLandmarkerResult]]):
     def __init__(
         self,
         model_asset_path: str,
         max_hands: int = 2
     ) -> None:
-        self._result: Optional[vision.HandLandmarkerResult] = None
+        self._result: Optional[HandLandmarkerResult] = None
         base_options = python.BaseOptions(model_asset_path=model_asset_path)
         options = vision.HandLandmarkerOptions(
             base_options=base_options,
@@ -39,7 +42,7 @@ class HandDetector(Detector[Optional[vision.HandLandmarkerResult]]):
 
     def __set_hands(
         self,
-        detection_result: vision.HandLandmarkerResult,
+        detection_result: HandLandmarkerResult,
         image: mp.Image,
         timestamp: int
     ) -> None:
@@ -54,16 +57,16 @@ class HandDetector(Detector[Optional[vision.HandLandmarkerResult]]):
         self._detector.detect_async(img, timestamp)
 
     @property
-    def result(self) -> Optional[vision.HandLandmarkerResult]:
+    def result(self) -> Optional[HandLandmarkerResult]:
         return self._result
 
-class FaceDetector(Detector[Optional[vision.FaceLandmarkerResult]]):
+class FaceDetector(Detector[Optional[FaceLandmarkerResult]]):
     def __init__(
         self,
         model_asset_path: str,
         max_faces: int = 1
     ) -> None:
-        self._result: Optional[vision.FaceLandmarkerResult] = None
+        self._result: Optional[FaceLandmarkerResult] = None
         base_options = python.BaseOptions(model_asset_path=model_asset_path)
         options = vision.FaceLandmarkerOptions(
             base_options=base_options,
@@ -75,7 +78,7 @@ class FaceDetector(Detector[Optional[vision.FaceLandmarkerResult]]):
 
     def __set_faces(
         self,
-        detection_result: vision.FaceLandmarkerResult,
+        detection_result: FaceLandmarkerResult,
         image: mp.Image,
         timestamp: int
     ) -> None:
@@ -90,16 +93,16 @@ class FaceDetector(Detector[Optional[vision.FaceLandmarkerResult]]):
         self._detector.detect_async(img, timestamp)
 
     @property
-    def result(self) -> Optional[vision.FaceLandmarkerResult]:
+    def result(self) -> Optional[FaceLandmarkerResult]:
         return self._result
 
-class BodyDetector(Detector[Optional[vision.PoseLandmarkerResult]]):
+class BodyDetector(Detector[Optional[PoseLandmarkerResult]]):
     def __init__(
         self,
         model_asset_path: str,
         max_bodies: int = 1
     ) -> None:
-        self._result: Optional[vision.PoseLandmarkerResult] = None
+        self._result: Optional[PoseLandmarkerResult] = None
         base_options = python.BaseOptions(model_asset_path=model_asset_path)
         options = vision.PoseLandmarkerOptions(
             base_options=base_options,
@@ -111,7 +114,7 @@ class BodyDetector(Detector[Optional[vision.PoseLandmarkerResult]]):
 
     def __set_bodies(
         self,
-        detection_result: vision.PoseLandmarkerResult,
+        detection_result: PoseLandmarkerResult,
         image: mp.Image,
         timestamp: int
     ) -> None:
@@ -126,5 +129,5 @@ class BodyDetector(Detector[Optional[vision.PoseLandmarkerResult]]):
         self._detector.detect_async(img, timestamp)
 
     @property
-    def result(self) -> Optional[vision.PoseLandmarkerResult]:
+    def result(self) -> Optional[PoseLandmarkerResult]:
         return self._result

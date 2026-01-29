@@ -16,15 +16,15 @@
 # limitations under the License.
 """MediaPipe solution drawing utils."""
 
-from dataclasses import dataclass
 import math
-from typing import List, Mapping, Optional, Tuple
+from dataclasses import dataclass
+from typing import Dict, Iterable, Mapping, Optional, Tuple
 
 import cv2
 import numpy as np
 
-import landmark as landmark_pb2
-from connections import Connection
+from .connections import Connection
+from .landmark import NormalizedLandmarkList
 
 _PRESENCE_THRESHOLD = 0.5
 _VISIBILITY_THRESHOLD = 0.5
@@ -65,8 +65,8 @@ def _normalized_to_pixel_coordinates(
 
 def draw_landmarks(
     image: np.ndarray,
-    landmark_list: landmark_pb2.NormalizedLandmarkList,
-    connections: Optional[List[Connection]] = None,
+    landmark_list: NormalizedLandmarkList,
+    connections: Optional[Iterable[Connection]] = None,
     landmark_drawing_spec: Optional[
         DrawingSpec | Mapping[int, DrawingSpec]
     ] = DrawingSpec(color=RED_COLOR),
@@ -104,7 +104,7 @@ def draw_landmarks(
     if image.shape[2] != _BGR_CHANNELS:
         raise ValueError(f'Input image must contain {_BGR_CHANNELS} channel bgr data.')
     image_rows, image_cols, _ = image.shape
-    idx_to_coordinates: Mapping[int, Tuple[int, int]] = {}
+    idx_to_coordinates: Dict[int, Tuple[int, int]] = {}
     for idx, landmark in enumerate(landmark_list.landmark):
         if ((landmark.visibility is not None and
                 landmark.visibility < _VISIBILITY_THRESHOLD) or
@@ -129,8 +129,8 @@ def draw_landmarks(
 
 def _draw_connections(
     image: np.ndarray,
-    landmark_list: landmark_pb2.NormalizedLandmarkList,
-    connections: List[Connection],
+    landmark_list: NormalizedLandmarkList,
+    connections: Iterable[Connection],
     connection_drawing_spec: DrawingSpec | Mapping[Tuple[int, int], DrawingSpec],
     idx_to_coordinates: Mapping[int, Tuple[int, int]]
 ) -> None:
@@ -143,8 +143,10 @@ def _draw_connections(
             raise ValueError(f'Landmark index is out of range. Invalid connection '
                             f'from landmark #{start_idx} to landmark #{end_idx}.')
         if start_idx in idx_to_coordinates and end_idx in idx_to_coordinates:
-            should_map = isinstance(connection_drawing_spec, Mapping)
-            drawing_spec = connection_drawing_spec[(start_idx, end_idx)] if should_map else connection_drawing_spec
+            if isinstance(connection_drawing_spec, Mapping):
+                drawing_spec = connection_drawing_spec[(start_idx, end_idx)]
+            else:
+                drawing_spec = connection_drawing_spec
             cv2.line(image, idx_to_coordinates[start_idx],
                     idx_to_coordinates[end_idx], drawing_spec.color,
                     drawing_spec.thickness)
