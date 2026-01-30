@@ -18,13 +18,14 @@
 
 import math
 from dataclasses import dataclass
-from typing import Dict, Iterable, Mapping, Optional, Tuple
+from typing import Dict, Iterable, List, Mapping, Optional, Tuple
 
 import cv2
 import numpy as np
+from mediapipe.tasks.python.components.containers.landmark import \
+    NormalizedLandmark
 
 from .connections import Connection
-from .landmark import NormalizedLandmarkList
 
 _PRESENCE_THRESHOLD = 0.5
 _VISIBILITY_THRESHOLD = 0.5
@@ -65,7 +66,7 @@ def _normalized_to_pixel_coordinates(
 
 def draw_landmarks(
     image: np.ndarray,
-    landmark_list: NormalizedLandmarkList,
+    landmark_list: List[NormalizedLandmark],
     connections: Optional[Iterable[Connection]] = None,
     landmark_drawing_spec: Optional[
         DrawingSpec | Mapping[int, DrawingSpec]
@@ -105,11 +106,13 @@ def draw_landmarks(
         raise ValueError(f'Input image must contain {_BGR_CHANNELS} channel bgr data.')
     image_rows, image_cols, _ = image.shape
     idx_to_coordinates: Dict[int, Tuple[int, int]] = {}
-    for idx, landmark in enumerate(landmark_list.landmark):
+    for idx, landmark in enumerate(landmark_list):
         if ((landmark.visibility is not None and
                 landmark.visibility < _VISIBILITY_THRESHOLD) or
                 (landmark.presence is not None and
-                landmark.presence < _PRESENCE_THRESHOLD)):
+                landmark.presence < _PRESENCE_THRESHOLD) or
+                landmark.x is None or
+                landmark.y is None):
             continue
         landmark_px = _normalized_to_pixel_coordinates(
                 landmark.x, landmark.y, image_cols, image_rows)
@@ -129,13 +132,13 @@ def draw_landmarks(
 
 def _draw_connections(
     image: np.ndarray,
-    landmark_list: NormalizedLandmarkList,
+    landmark_list: List[NormalizedLandmark],
     connections: Iterable[Connection],
     connection_drawing_spec: DrawingSpec | Mapping[Tuple[int, int], DrawingSpec],
     idx_to_coordinates: Mapping[int, Tuple[int, int]]
 ) -> None:
     '''Draws the connections if the start and end landmarks are both visible.'''
-    num_landmarks = len(landmark_list.landmark)
+    num_landmarks = len(landmark_list)
     for connection in connections:
         start_idx = connection.start
         end_idx = connection.end

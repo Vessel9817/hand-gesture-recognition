@@ -1,4 +1,4 @@
-# Original source:
+# Based on:
 # https://colab.research.google.com/github/googlesamples/mediapipe/blob/main/examples/hand_landmarker/python/hand_landmarker.ipynb
 
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,21 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import TypeAlias
-
 import cv2
 import numpy as np
 from mediapipe.tasks.python import vision
+from mediapipe.tasks.python.components.containers.landmark import \
+    NormalizedLandmark
 
 from . import drawing_styles
 from .drawing_utils import draw_landmarks
-from .landmark import NormalizedLandmark, NormalizedLandmarkList
 from .type_aliases import (FaceLandmarkerResult, HandLandmarkerResult,
-                           PoseLandmarkerResult)
-
-Result: TypeAlias = HandLandmarkerResult \
-    | FaceLandmarkerResult \
-    | PoseLandmarkerResult
+                           LandmarkerResult, PoseLandmarkerResult)
 
 MARGIN = 10 # pixels
 FONT_SIZE = 1
@@ -36,7 +31,7 @@ HANDEDNESS_TEXT_COLOR = (88, 205, 54) # vibrant green
 
 def draw_landmarks_on_image(
     rgb_image: np.ndarray,
-    detection_result: Result
+    detection_result: LandmarkerResult
 ) -> None:
     if isinstance(detection_result, vision.HandLandmarkerResult):
         return _draw_hand_landmarks_on_image(rgb_image, detection_result)
@@ -57,11 +52,10 @@ def _draw_hand_landmarks_on_image(
         hand_landmarks = hand_landmarks_list[idx]
         handedness = handedness_list[idx]
         # Draw the hand landmarks.
-        hand_landmarks_proto = NormalizedLandmarkList()
-        hand_landmarks_proto.landmark.extend([
+        hand_landmarks_proto = [
             NormalizedLandmark(x=landmark.x, y=landmark.y, z=landmark.z)
             for landmark in hand_landmarks
-        ])
+        ]
         draw_landmarks(
             rgb_image,
             hand_landmarks_proto,
@@ -89,11 +83,10 @@ def _draw_face_landmarks_on_image(
     for idx in range(len(face_landmarks_list)):
         face_landmarks = face_landmarks_list[idx]
         # Draw the face landmarks.
-        face_landmarks_proto = NormalizedLandmarkList()
-        face_landmarks_proto.landmark.extend([
+        face_landmarks_proto = [
             NormalizedLandmark(x=landmark.x, y=landmark.y, z=landmark.z)
             for landmark in face_landmarks
-        ])
+        ]
         draw_landmarks(
             rgb_image,
             face_landmarks_proto,
@@ -110,11 +103,10 @@ def _draw_body_landmarks_on_image(
     for idx in range(len(body_landmarks_list)):
         body_landmarks = body_landmarks_list[idx]
         # Draw the body landmarks.
-        body_landmarks_proto = NormalizedLandmarkList()
-        body_landmarks_proto.landmark.extend([
+        body_landmarks_proto = [
             NormalizedLandmark(x=landmark.x, y=landmark.y, z=landmark.z)
             for landmark in body_landmarks
-        ])
+        ]
         draw_landmarks(
             rgb_image,
             body_landmarks_proto,
