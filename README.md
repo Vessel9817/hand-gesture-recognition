@@ -89,6 +89,9 @@ See: [CONTRIBUTING.md](CONTRIBUTING.md)
 This project is licensed under the AGPLv3 License - see
 the [LICENSE](LICENSE) file for details.
 
+Credit to the MediaPipe authors for creating the samples this project
+is in part based on. Individual files contain more specific attributions.
+
 [MediaPipe]: https://ai.google.dev/edge/mediapipe/solutions/guide
 [hand models]: https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker#models
 [face models]: https://ai.google.dev/edge/mediapipe/solutions/vision/face_landmarker#models

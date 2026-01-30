@@ -1,6 +1,8 @@
 # Based on:
 # https://colab.research.google.com/github/googlesamples/mediapipe/blob/main/examples/hand_landmarker/python/hand_landmarker.ipynb
 
+"""MediaPipe demo."""
+
 import os
 import sys
 import time

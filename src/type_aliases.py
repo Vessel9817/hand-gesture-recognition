@@ -1,3 +1,5 @@
+"""Type aliases."""
+
 from typing import TypeAlias
 
 from mediapipe.tasks.python import vision
