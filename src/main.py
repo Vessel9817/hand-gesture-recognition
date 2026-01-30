@@ -17,9 +17,10 @@ from .drawing import draw_landmarks_on_image
 
 _CAMERA_INDEX = 0
 _SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-_HAND_MODEL_ASSET_PATH = os.path.join(_SCRIPT_DIR, 'hand_landmarker.task')
-_FACE_MODEL_ASSET_PATH = os.path.join(_SCRIPT_DIR, 'face_landmarker.task')
-_BODY_MODEL_ASSET_PATH = os.path.join(_SCRIPT_DIR, 'pose_landmarker.task')
+_MODELS_DIR = os.path.join(_SCRIPT_DIR, '..', 'models')
+_HAND_MODEL_ASSET_PATH = os.path.join(_MODELS_DIR, 'hand_landmarker.task')
+_FACE_MODEL_ASSET_PATH = os.path.join(_MODELS_DIR, 'face_landmarker.task')
+_BODY_MODEL_ASSET_PATH = os.path.join(_MODELS_DIR, 'pose_landmarker.task')
 _REFRESH_RATE_MS = 1
 _EXIT_KEY = ord('q')
 _WINDOW_TITLE = 'Hand, face and body recognition'
