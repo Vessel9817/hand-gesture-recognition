@@ -16,7 +16,7 @@
 # limitations under the License.
 """MediaPipe Hands connections."""
 
-from typing import Iterable, Tuple, TypeAlias
+from typing import Iterable, TypeAlias
 
 from mediapipe.tasks.python.vision.face_landmarker import \
     FaceLandmarksConnections
@@ -30,12 +30,12 @@ Connection: TypeAlias = \
     FaceLandmarksConnections.Connection | \
     PoseLandmarksConnections.Connection
 
-def _as_legacy_connection(c: Connection) -> Tuple[int, int]:
+def _as_legacy_connection(c: Connection) -> tuple[int, int]:
     return (c.start, c.end)
 
 def _as_legacy_connections(
     cs: Iterable[Connection]
-) -> frozenset[Tuple[int, int]]:
+) -> frozenset[tuple[int, int]]:
     return frozenset().union(map(_as_legacy_connection, cs))
 
 HAND_PALM_CONNECTIONS = _as_legacy_connections(

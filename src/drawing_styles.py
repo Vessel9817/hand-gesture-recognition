@@ -16,7 +16,7 @@
 # limitations under the License.
 """MediaPipe solution drawing styles."""
 
-from typing import Mapping, Tuple
+from typing import Mapping
 
 from mediapipe.tasks.python.vision.hand_landmarker import HandLandmark
 
@@ -109,7 +109,7 @@ _THICKNESS_TESSELATION = 1
 _THICKNESS_BODY_LANDMARKS = 2
 
 def get_default_hand_connections_style(
-) -> Mapping[Tuple[int, int], DrawingSpec]:
+) -> Mapping[tuple[int, int], DrawingSpec]:
   """Returns the default hand connections drawing style.
 
   Returns:

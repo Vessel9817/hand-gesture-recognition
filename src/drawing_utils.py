@@ -18,7 +18,7 @@
 
 import math
 from dataclasses import dataclass
-from typing import Dict, Iterable, List, Mapping, Optional, Tuple
+from typing import Dict, Iterable, List, Mapping, Optional
 
 import cv2
 import numpy as np
@@ -40,7 +40,7 @@ BLUE_COLOR = (255, 0, 0)
 @dataclass
 class DrawingSpec:
     # Color for drawing the annotation. Default to the white color.
-    color: Tuple[int, int, int] = WHITE_COLOR
+    color: tuple[int, int, int] = WHITE_COLOR
     # Thickness for drawing the annotation. Default to 2 pixels.
     thickness: int = 2
     # Circle radius. Default to 2 pixels.
@@ -56,7 +56,7 @@ def _normalized_to_pixel_coordinates(
     normalized_y: float,
     image_width: int,
     image_height: int
-) -> Optional[Tuple[int, int]]:
+) -> Optional[tuple[int, int]]:
     if not (_is_valid_normalized_value(normalized_x) and
             _is_valid_normalized_value(normalized_y)):
         return None
@@ -71,7 +71,7 @@ def draw_landmarks(
     landmark_drawing_spec: Optional[
         DrawingSpec | Mapping[int, DrawingSpec]
     ] = DrawingSpec(color=RED_COLOR),
-    connection_drawing_spec: DrawingSpec | Mapping[Tuple[int, int], DrawingSpec] = DrawingSpec(),
+    connection_drawing_spec: DrawingSpec | Mapping[tuple[int, int], DrawingSpec] = DrawingSpec(),
     is_drawing_landmarks: bool = True,
 ) -> None:
     """
@@ -105,7 +105,7 @@ def draw_landmarks(
     if image.shape[2] != _BGR_CHANNELS:
         raise ValueError(f'Input image must contain {_BGR_CHANNELS} channel bgr data.')
     image_rows, image_cols, _ = image.shape
-    idx_to_coordinates: Dict[int, Tuple[int, int]] = {}
+    idx_to_coordinates: Dict[int, tuple[int, int]] = {}
     for idx, landmark in enumerate(landmark_list):
         if ((landmark.visibility is not None and
                 landmark.visibility < _VISIBILITY_THRESHOLD) or
@@ -134,8 +134,8 @@ def _draw_connections(
     image: np.ndarray,
     landmark_list: List[NormalizedLandmark],
     connections: Iterable[Connection],
-    connection_drawing_spec: DrawingSpec | Mapping[Tuple[int, int], DrawingSpec],
-    idx_to_coordinates: Mapping[int, Tuple[int, int]]
+    connection_drawing_spec: DrawingSpec | Mapping[tuple[int, int], DrawingSpec],
+    idx_to_coordinates: Mapping[int, tuple[int, int]]
 ) -> None:
     '''Draws the connections if the start and end landmarks are both visible.'''
     num_landmarks = len(landmark_list)
@@ -157,7 +157,7 @@ def _draw_connections(
 def _draw_landmarks(
     image: np.ndarray,
     landmark_drawing_spec: DrawingSpec | Mapping[int, DrawingSpec],
-    idx_to_coordinates: Mapping[int, Tuple[int, int]]
+    idx_to_coordinates: Mapping[int, tuple[int, int]]
 ) -> None:
     '''Draws landmark points on the image.'''
     for idx, landmark_px in idx_to_coordinates.items():
