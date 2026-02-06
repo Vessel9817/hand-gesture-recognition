@@ -5,7 +5,7 @@
 
 import math
 from dataclasses import dataclass
-from typing import Dict, Iterable, List, Mapping, Optional
+from typing import Dict, Iterable, List, Mapping, Optional, Set
 
 import cv2
 import numpy as np
@@ -43,10 +43,7 @@ def _normalized_to_pixel_coordinates(
     normalized_y: float,
     image_width: int,
     image_height: int
-) -> Optional[tuple[int, int]]:
-    if not (_is_valid_normalized_value(normalized_x) and
-            _is_valid_normalized_value(normalized_y)):
-        return None
+) -> tuple[int, int]:
     x_px = min(math.floor(normalized_x * image_width), image_width - 1)
     y_px = min(math.floor(normalized_y * image_height), image_height - 1)
     return x_px, y_px
@@ -93,6 +90,7 @@ def draw_landmarks(
         raise ValueError(f'Input image must contain {_BGR_CHANNELS} channel bgr data.')
     image_rows, image_cols, _ = image.shape
     idx_to_coordinates: Dict[int, tuple[int, int]] = {}
+    oob_landmark_idx: Set[int] = set()
     for idx, landmark in enumerate(landmark_list):
         if ((landmark.visibility is not None and
                 landmark.visibility < _VISIBILITY_THRESHOLD) or
@@ -101,19 +99,25 @@ def draw_landmarks(
                 landmark.x is None or
                 landmark.y is None):
             continue
-        landmark_px = _normalized_to_pixel_coordinates(
+        valid_x = _is_valid_normalized_value(landmark.x)
+        valid_y = _is_valid_normalized_value(landmark.y)
+        idx_to_coordinates[idx] = _normalized_to_pixel_coordinates(
                 landmark.x, landmark.y, image_cols, image_rows)
-        if landmark_px:
-            idx_to_coordinates[idx] = landmark_px
+        if not (valid_x and valid_y):
+            # Don't draw landmark if it's out of image bounds
+            oob_landmark_idx.add(idx)
     if connections:
+        visible_connections = filter(lambda c: not (c.start in oob_landmark_idx and c.end in oob_landmark_idx), connections)
         _draw_connections(
             image,
             landmark_list,
-            connections,
+            visible_connections,
             connection_drawing_spec,
             idx_to_coordinates)
     # Draws landmark points after finishing the connection lines, which is
     # aesthetically better.
+    for idx in oob_landmark_idx:
+        del idx_to_coordinates[idx]
     if is_drawing_landmarks and landmark_drawing_spec:
         _draw_landmarks(image, landmark_drawing_spec, idx_to_coordinates)
 
@@ -124,11 +128,10 @@ def _draw_connections(
     connection_drawing_spec: DrawingSpec | Mapping[tuple[int, int], DrawingSpec],
     idx_to_coordinates: Mapping[int, tuple[int, int]]
 ) -> None:
-    '''Draws the connections if the start and end landmarks are both visible.'''
+    '''Draws the connections between landmark points.'''
     num_landmarks = len(landmark_list)
     for connection in connections:
-        start_idx = connection.start
-        end_idx = connection.end
+        start_idx, end_idx = connection.start, connection.end
         if not (0 <= start_idx < num_landmarks and 0 <= end_idx < num_landmarks):
             raise ValueError(f'Landmark index is out of range. Invalid connection '
                             f'from landmark #{start_idx} to landmark #{end_idx}.')
