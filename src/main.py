@@ -15,12 +15,13 @@ from .colab import cv2_imshow
 from .detectors import BodyDetector, FaceDetector, HandDetector
 from .drawing import draw_landmarks_on_image
 
-_CAMERA_INDEX = 0
 _SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-_MODELS_DIR = os.path.join(_SCRIPT_DIR, '..', 'models')
+_PROJECT_DIR = os.path.join(_SCRIPT_DIR, '..')
+_MODELS_DIR = os.path.join(_PROJECT_DIR, 'models')
 _HAND_MODEL_ASSET_PATH = os.path.join(_MODELS_DIR, 'hand_landmarker.task')
 _FACE_MODEL_ASSET_PATH = os.path.join(_MODELS_DIR, 'face_landmarker.task')
 _BODY_MODEL_ASSET_PATH = os.path.join(_MODELS_DIR, 'pose_landmarker.task')
+_CAMERA_INDEX = 0
 _REFRESH_RATE_MS = 1
 _EXIT_KEY = ord('q')
 _WINDOW_TITLE = 'Hand, face and body recognition'

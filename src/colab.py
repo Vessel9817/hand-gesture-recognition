@@ -7,7 +7,7 @@ except ModuleNotFoundError:
     is_colab = False
 
 def _cv2_imshow_colab(
-    _: str,
+    winname: str,
     mat: cv2.typing.MatLike | cv2.cuda.GpuMat | cv2.UMat
 ) -> None:
     colab.cv2_imshow(mat)
