@@ -1,9 +1,15 @@
 absl-py==2.3.1
+ast_serialize==0.6.0
 cffi==2.0.0
 flatbuffers==25.12.19
+librt==0.13.0
 mediapipe==0.10.31
+mypy==2.3.0
+mypy_extensions==1.1.0
 numpy==2.4.1
 opencv-python==4.13.0.90
 packaging==25.0
+pathspec==1.1.1
 pycparser==2.23
 sounddevice==0.5.3
+typing_extensions==4.16.0
