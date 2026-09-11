@@ -1,5 +1,8 @@
 # Hand Tracking and Facial Recognition
 
+[![AGPL-3.0-or-later license][license-badge]](LICENSE)
+[![CI][ci-badge]][ci-workflow]
+
 A real-time hand, face and full-body recognition system
 built with [MediaPipe][MediaPipe]. Tracks landmarks using a webcam.
 Can be used for sign language recognition, gesture-based controls
@@ -93,6 +96,9 @@ the [LICENSE](LICENSE) file for details.
 Credit to the MediaPipe authors for creating the samples this project
 is in part based on. Individual files contain more specific attributions.
 
+[license-badge]: https://raw.githubusercontent.com/Vessel9817/hand-gesture-recognition/refs/heads/main/badge.svg
+[ci-badge]: https://github.com/Vessel9817/hand-gesture-recognition/actions/workflows/ci.yml/badge.svg
+[ci-workflow]: https://github.com/Vessel9817/hand-gesture-recognition/actions/workflows/ci.yml
 [MediaPipe]: https://ai.google.dev/edge/mediapipe/solutions/guide
 [hand models]: https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker#models
 [face models]: https://ai.google.dev/edge/mediapipe/solutions/vision/face_landmarker#models
