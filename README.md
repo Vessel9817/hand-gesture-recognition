@@ -90,7 +90,7 @@ See: [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## License
 
-This project is licensed under the AGPLv3 License - see
+This project is licensed under the `AGPL-3.0-or-later` License - see
 the [LICENSE](LICENSE) file for details.
 
 Credit to the MediaPipe authors for creating the samples this project
