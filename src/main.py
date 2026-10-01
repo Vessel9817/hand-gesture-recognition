@@ -21,8 +21,10 @@ _MODELS_DIR = os.path.join(_PROJECT_DIR, 'models')
 _HAND_MODEL_ASSET_PATH = os.path.join(_MODELS_DIR, 'hand_landmarker.task')
 _FACE_MODEL_ASSET_PATH = os.path.join(_MODELS_DIR, 'face_landmarker.task')
 _BODY_MODEL_ASSET_PATH = os.path.join(_MODELS_DIR, 'pose_landmarker.task')
+_DRAW_CAMERA_IMG = True
 _CAMERA_INDEX = 0
 _REFRESH_RATE_MS = 1
+_KEY_MASK = 0xFF
 _EXIT_KEY = ord('q')
 _WINDOW_TITLE = 'Hand, face and body recognition'
 
@@ -48,8 +50,17 @@ if __name__ == '__main__':
             body_detector.detect_async(img, passed_time_ms)
             face_detector.detect_async(img, passed_time_ms)
             hand_detector.detect_async(img, passed_time_ms)
+            # Drawing background
+            if _DRAW_CAMERA_IMG:
+                # Camera
+                annotated_image = np.copy(img.numpy_view())
+            else:
+                # Black
+                annotated_image = np.zeros(
+                    (img.height, img.width, img.channels),
+                    dtype=np.uint8
+                )
             # Drawing latest results
-            annotated_image = np.copy(img.numpy_view())
             if body_detector.result is not None:
                 draw_landmarks_on_image(annotated_image, body_detector.result)
             if face_detector.result is not None:
@@ -58,7 +69,7 @@ if __name__ == '__main__':
                 draw_landmarks_on_image(annotated_image, hand_detector.result)
             # Rendering window
             cv2_imshow(_WINDOW_TITLE, annotated_image)
-            if cv2.waitKey(_REFRESH_RATE_MS) & 0xFF == _EXIT_KEY:
+            if cv2.waitKey(_REFRESH_RATE_MS) & _KEY_MASK == _EXIT_KEY:
                 # Destroy window ASAP while we still have focus,
                 # otherwise later destruction might hang
                 cv2.destroyWindow(_WINDOW_TITLE)
